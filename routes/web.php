@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\PostInfaqController;
 use App\Http\Controllers\CountInfaqController;
 use App\Http\Controllers\CountZakatController;
 use App\Http\Controllers\CountQurbanController;
@@ -90,7 +91,57 @@ Route::middleware(['auth', AdminMiddleware::class])
             'countQurban.destroy'
         );
 
+        // Post Infaq
+        Route::get(
+            '/post-infaq',
+            [PostInfaqController::class, 'index']
+        )->name(
+            'postInfaq.index'
+        );
+        Route::get(
+            '/post-infaq/create',
+            [PostInfaqController::class, 'create']
+        )->name(
+            'postInfaq.create'
+        );
+        Route::post(
+            '/post-infaq',
+            [PostInfaqController::class, 'store']
+        )->name(
+            'postInfaq.store'
+        );
+        Route::get(
+            '/post-infaq/{postInfaq}',
+            [PostInfaqController::class, 'show']
+        )->name(
+            'postInfaq.show'
+        );
+        Route::get(
+            '/post-infaq/{postInfaq}/edit',
+            [PostInfaqController::class, 'edit']
+        )->name(
+            'postInfaq.edit'
+        );
+        Route::put(
+            '/post-infaq/{postInfaq}',
+            [PostInfaqController::class, 'update']
+        )->name(
+            'postInfaq.update'
+        );
+        Route::patch(
+            '/post-infaq/{postInfaq}',
+            [PostInfaqController::class, 'update']
+        )->name(
+            'postInfaq.update'
+        );
+        Route::delete(
+            '/post-infaq/{postInfaq}',
+            [PostInfaqController::class, 'destroy']
+        )->name(
+            'postInfaq.destroy'
+        );
 
+        
     });
 
 
@@ -139,5 +190,5 @@ Route::middleware(['auth', AdminOrAuditMiddleware::class])
             'countQurban.show'
         );
 
-        
+
     });
