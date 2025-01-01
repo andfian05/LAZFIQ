@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('qurbans', function (Blueprint $table) {
+        Schema::create('count_qurbans', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal');
+            $table->date('tanggal_cq');
             $table->string('kategori_qurban');
-            $table->string('jumlah_qurban');
+            $table->integer('jumlah_sapi')->nullable()->default(0);
+            $table->integer('jumlah_kambing')->nullable()->default(0);
             $table->text('nama_yg_qurban');
-            $table->string('bukti')->nullable();
-            $table->string('status');
+            $table->string('bukti_cq')->nullable();
+            $table->string('status_cq');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('qurbans');
+        Schema::dropIfExists('count_qurbans');
     }
 };

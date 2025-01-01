@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posting_infaqs', function (Blueprint $table) {
+        Schema::create('documentations', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal');
-            $table->decimal('debit', 10, 2);
-            $table->decimal('kredit', 10, 2)->nullable();
-            $table->decimal('saldo_akhir', 10, 2)->nullable();
-            $table->string('status');
+            $table->date('tanggal_kegiatan');
+            $table->string('foto_kegiatan');
+            $table->string('kategori_kegiatan');
+            $table->string('judul_kegiatan');
+            $table->text('deskripsi_kegiatan');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posting_infaqs');
+        Schema::dropIfExists('documentations');
     }
 };

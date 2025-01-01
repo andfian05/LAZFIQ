@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posting_zakats', function (Blueprint $table) {
+        Schema::create('post_zakats', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal');
+            $table->date('tanggal_pz');
             $table->decimal('zakat_uang', 10, 2);
             $table->float('zakat_beras');
-            $table->integer('mustahiq');
-            $table->string('status');
+            $table->integer('mustahiq_pz');
+            $table->string('status_pz');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posting_zakats');
+        Schema::dropIfExists('post_zakats');
     }
 };

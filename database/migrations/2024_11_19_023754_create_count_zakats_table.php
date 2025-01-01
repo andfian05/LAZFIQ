@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('zakats', function (Blueprint $table) {
+        Schema::create('count_zakats', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal');
-            $table->time('waktu');
+            $table->date('tanggal_cz');
+            $table->time('waktu_cz');
             $table->string('muzakki_pertama');
             $table->text('keluarga_muzakki');
             $table->string('jenis_zakat');
             $table->float('zakat_beras')->nullable();
             $table->decimal('zakat_uang', 10, 2)->nullable();
-            $table->string('status');
+            $table->string('status_cz');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('zakats');
+        Schema::dropIfExists('count_zakats');
     }
 };

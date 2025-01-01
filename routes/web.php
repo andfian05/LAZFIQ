@@ -65,7 +65,6 @@ Route::get('/form_qurban', function () {
 
 Route::get('/cek_qurban', function () {
     return view('admin.perhitungan.th_qurban');
-
 });
 
 Route::get('/detail_cek_qurban', function () {
@@ -116,7 +115,7 @@ Route::get('/upload', function () {
 });
 
 
-//perhitungan
+// perhitungan
 Route::get('/hitung_infaq', function () {
     return view('admin.perhitungan.perhitungan_infaq');
 });
