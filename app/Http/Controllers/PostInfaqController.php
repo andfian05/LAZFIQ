@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\PostInfaq;
 use Illuminate\Http\Request;
+use App\Exports\PostInfaqExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PostInfaqController extends Controller
 {
@@ -179,6 +181,25 @@ class PostInfaqController extends Controller
             return redirect()->route('postInfaq.index')->with(
                 'error-process',
                 'Terjadi kesalahan dalam menghapus data posting infaq!'
+            );
+        }
+    }
+
+    /**
+     * Summary of exportExcel post infaq
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportExcel()
+    {
+        try {
+            return Excel::download(
+                new PostInfaqExport,
+                'Data-posting-infaq.xlsx'
+            );
+        } catch (\Throwable $th) {
+            return redirect()->route('postInfaq.index')->with(
+                'error-process',
+                'Terjadi kesalahan dalam mengunduh file data posting infaq! Silakan coba lagi.'
             );
         }
     }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\PostZakat;
 use Illuminate\Http\Request;
+use App\Exports\PostZakatExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PostZakatController extends Controller
 {
@@ -165,6 +167,25 @@ class PostZakatController extends Controller
             return redirect()->route('postZakat.index')->with(
                 'error-process',
                 'Terjadi kesalahan dalam menghapus data posting zakat!'
+            );
+        }
+    }
+
+    /**
+     * Summary of exportExcel post zakat
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportExcel()
+    {
+        try {
+            return Excel::download(
+                new PostZakatExport,
+                'Data-posting-zakat.xlsx'
+            );
+        } catch (\Throwable $th) {
+            return redirect()->route('postZakat.index')->with(
+                'error-process',
+                'Terjadi kesalahan dalam mengunduh file data posting zakat! Silakan coba lagi.'
             );
         }
     }

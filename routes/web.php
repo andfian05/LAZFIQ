@@ -144,7 +144,13 @@ Route::middleware(['auth', AdminMiddleware::class])
             'postInfaq.destroy'
         );
 
-
+        // Excel Export for Post Infaq
+        Route::get(
+            '/post-infaq-exportExcel',
+            [PostInfaqController::class, 'exportExcel']
+        )->name(
+            'postInfaq.exportExcel'
+        );
 
         // Post Zakat
         Route::get(
@@ -196,7 +202,13 @@ Route::middleware(['auth', AdminMiddleware::class])
             'postZakat.destroy'
         );
 
-
+        // Excel Export for Post Zakat
+        Route::get(
+            '/post-zakat-exportExcel',
+            [PostZakatController::class, 'exportExcel']
+        )->name(
+            'postZakat.exportExcel'
+        );
 
         // Post Qurban
         Route::get(
@@ -248,7 +260,13 @@ Route::middleware(['auth', AdminMiddleware::class])
             'postQurban.destroy'
         );
 
-
+        // Excel Export for Post Qurban
+        Route::get(
+            '/post-qurban-exportExcel',
+            [PostQurbanController::class, 'exportExcel']
+        )->name(
+            'postQurban.exportExcel'
+        );
 
         // Documentation
         Route::get(

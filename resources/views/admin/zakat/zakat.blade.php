@@ -56,7 +56,7 @@
                             <a href="{{ route('postZakat.create') }}" class="btn btn-primary mb-3">
                                 Tambah Data
                             </a>
-                            <a href="#" class="btn btn-success mb-3">
+                            <a href="{{route('postZakat.exportExcel')}}" class="btn btn-success mb-3">
                                 Excel
                             </a>
                             <div class="table-responsive" id="no-more-tables">

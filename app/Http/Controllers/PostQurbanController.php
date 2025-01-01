@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\PostQurban;
 use Illuminate\Http\Request;
+use App\Exports\PostQurbanExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PostQurbanController extends Controller
 {
@@ -165,6 +167,25 @@ class PostQurbanController extends Controller
             return redirect()->route('postQurban.index')->with(
                 'error-process',
                 'Terjadi kesalahan dalam menghapus data posting qurban!'
+            );
+        }
+    }
+
+    /**
+     * Summary of exportExcel post qurban
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportExcel()
+    {
+        try {
+            return Excel::download(
+                new PostQurbanExport,
+                'Data-posting-qurban.xlsx'
+            );
+        } catch (\Throwable $th) {
+            return redirect()->route('postQurban.index')->with(
+                'error-process',
+                'Terjadi kesalahan dalam mengunduh file data posting qurban! Silakan coba lagi.'
             );
         }
     }
