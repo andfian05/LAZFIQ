@@ -8,6 +8,7 @@ use App\Http\Controllers\PostInfaqController;
 use App\Http\Controllers\PostZakatController;
 use App\Http\Controllers\CountInfaqController;
 use App\Http\Controllers\CountZakatController;
+use App\Http\Controllers\PostQurbanController;
 use App\Http\Controllers\CountQurbanController;
 use App\Http\Middleware\AdminOrAuditMiddleware;
 
@@ -192,6 +193,58 @@ Route::middleware(['auth', AdminMiddleware::class])
             [PostZakatController::class, 'destroy']
         )->name(
             'postZakat.destroy'
+        );
+
+
+
+        // Post Qurban
+        Route::get(
+            '/post-qurban',
+            [PostQurbanController::class, 'index']
+        )->name(
+            'postQurban.index'
+        );
+        Route::get(
+            '/post-qurban/create',
+            [PostQurbanController::class, 'create']
+        )->name(
+            'postQurban.create'
+        );
+        Route::post(
+            '/post-qurban',
+            [PostQurbanController::class, 'store']
+        )->name(
+            'postQurban.store'
+        );
+        Route::get(
+            '/post-qurban/{postQurban}',
+            [PostQurbanController::class, 'show']
+        )->name(
+            'postQurban.show'
+        );
+        Route::get(
+            '/post-qurban/{postQurban}/edit',
+            [PostQurbanController::class, 'edit']
+        )->name(
+            'postQurban.edit'
+        );
+        Route::put(
+            '/post-qurban/{postQurban}',
+            [PostQurbanController::class, 'update']
+        )->name(
+            'postQurban.update'
+        );
+        Route::patch(
+            '/post-qurban/{postQurban}',
+            [PostQurbanController::class, 'update']
+        )->name(
+            'postQurban.update'
+        );
+        Route::delete(
+            '/post-qurban/{postQurban}',
+            [PostQurbanController::class, 'destroy']
+        )->name(
+            'postQurban.destroy'
         );
 
 
