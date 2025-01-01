@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\CountInfaqController;
+use App\Http\Controllers\CountZakatController;
 use App\Http\Middleware\AdminOrAuditMiddleware;
 
 
@@ -48,7 +49,27 @@ Route::middleware(['auth', AdminMiddleware::class])
             'countInfaq.destroy'
         );
 
+        // Count Zakat
+        Route::get(
+            '/count-zakat/create',
+            [CountZakatController::class, 'create']
+        )->name(
+            'countZakat.create'
+        );
+        Route::post(
+            '/count-zakat',
+            [CountZakatController::class, 'store']
+        )->name(
+            'countZakat.store'
+        );
+        Route::delete(
+            '/count-zakat/{countZakat}',
+            [CountZakatController::class, 'destroy']
+        )->name(
+            'countZakat.destroy'
+        );
 
+        
     });
 
 
@@ -67,6 +88,20 @@ Route::middleware(['auth', AdminOrAuditMiddleware::class])
             [CountInfaqController::class, 'show']
         )->name(
             'countInfaq.show'
+        );
+
+        // Count Zakat
+        Route::get(
+            '/count-zakat',
+            [CountZakatController::class, 'index']
+        )->name(
+            'countZakat.index'
+        );
+        Route::get(
+            '/count-zakat/{countZakat}',
+            [CountZakatController::class, 'show']
+        )->name(
+            'countZakat.show'
         );
 
         
