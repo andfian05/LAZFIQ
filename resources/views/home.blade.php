@@ -48,13 +48,13 @@
 
         <div class="container-fluid">
             <!--  Grafik Infaq -->
-            
+
 
             <!--  Grafik Zakat -->
-            
+
 
             <!--  Grafik Qurban -->
-            
+
 
             <!--  Footer -->
             <div class="py-6 px-6 text-center">
@@ -64,4 +64,42 @@
             </div>
         </div>
     </div>
+
+    @if (session('error'))
+        <!-- Modal -->
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="errorModalLabel">Terjadi Kesalahan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <!-- Modal Body -->
+                    <div class="modal-body text-center">
+                        <p>{{ session('error') }}</p>
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script untuk trigger modal -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                errorModal.show();
+
+                // Otomatis tertutup setelah 10 detik
+                setTimeout(() => {
+                    errorModal.hide();
+                    // Menghapus session error setelah modal tertutup
+                    @this.session.remove('error');
+                }, 10000);
+            });
+        </script>
+    @endif
 @endsection

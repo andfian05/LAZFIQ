@@ -11,7 +11,6 @@
                             <i class="ti ti-menu-2"></i>
                         </a>
                     </li>
-
                 </ul>
                 <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                     <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
@@ -24,13 +23,22 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                                 <div class="message-body">
-
                                     <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                                        <i class="ti ti-mail fs-6"></i>
-                                        <p class="mb-0 fs-3">Nama Yang Login</p>
+                                        <i class="ti ti-user fs-6"></i>
+                                        <p class="mb-0 fs-3">
+                                            {{ Auth::user()->name }} 
+                                        </p>
                                     </a>
 
-                                    <a href="" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                                    <a class="btn btn-outline-primary mx-3 mt-2 d-block"href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                  document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
                                 </div>
                             </div>
                         </li>
@@ -51,7 +59,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <form>
-                                    <a href="{{ route('infaq.index') }}" class="btn btn-outline-primary">
+                                    <a href="{{ route('countInfaq.index') }}" class="btn btn-outline-primary">
                                         Mengecek Data
                                     </a>
                                 </form>
@@ -63,7 +71,7 @@
                                 <div class="alert alert-warning text-center" role="alert">
                                     Kalkulator Infaq
                                 </div>
-                                <form action="{{ route('infaq.store') }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('countInfaq.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="mb-3">
                                         <label for="" class="form-label">Tanggal</label>
@@ -130,14 +138,14 @@
                                     </div> --}}
                                     <div class="mb-3">
                                         <label for="" class="form-label">Status Infaq</label>
-                                        <select name="status_infaq" id=""
-                                            class="form-control @error('status_infaq') is-invalid @enderror">
+                                        <select name="statusInfaq" id=""
+                                            class="form-control @error('statusInfaq') is-invalid @enderror">
                                             <option value="">--- Pilih ---</option>
                                             @foreach ($statusInfaq as $key => $value)
                                                 <option value="{{ $key }}">{{ $value }}</option>
                                             @endforeach
                                         </select>
-                                        @error('status_infaq')
+                                        @error('statusInfaq')
                                             <div class="form-control-muted">{{ $message }}</div>
                                         @enderror
                                     </div><br>
@@ -154,10 +162,10 @@
         </div>
 
         <div class="py-6 px-6 text-center">
-            <p class="mb-0 fs-4">Design and Developed by <a href="https://www.linkedin.com/in/fianfi/" 
-                target="_blank"
-                class="pe-1 text-primary text-decoration-underline">AndFat</a>
+            <p class="mb-0 fs-4">Design and Developed by <a href="https://www.linkedin.com/in/fianfi/" target="_blank"
+                    class="pe-1 text-primary text-decoration-underline">AndFath</a>
             </p>
         </div>
     </div>
+</div>
 @endsection
