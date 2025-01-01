@@ -11,6 +11,7 @@ use App\Http\Controllers\CountZakatController;
 use App\Http\Controllers\PostQurbanController;
 use App\Http\Controllers\CountQurbanController;
 use App\Http\Middleware\AdminOrAuditMiddleware;
+use App\Http\Controllers\DocumentationController;
 
 
 
@@ -249,7 +250,55 @@ Route::middleware(['auth', AdminMiddleware::class])
 
 
 
-        
+        // Documentation
+        Route::get(
+            '/documentation',
+            [DocumentationController::class, 'index']
+        )->name(
+            'documentation.index'
+        );
+        Route::get(
+            '/documentation/create',
+            [DocumentationController::class, 'create']
+        )->name(
+            'documentation.create'
+        );
+        Route::post(
+            '/documentation',
+            [DocumentationController::class, 'store']
+        )->name(
+            'documentation.store'
+        );
+        Route::get(
+            '/documentation/{documentation}',
+            [DocumentationController::class, 'show']
+        )->name(
+            'documentation.show'
+        );
+        Route::get(
+            '/documentation/{documentation}/edit',
+            [DocumentationController::class, 'edit']
+        )->name(
+            'documentation.edit'
+        );
+        Route::put(
+            '/documentation/{documentation}',
+            [DocumentationController::class, 'update']
+        )->name(
+            'documentation.update'
+        );
+        Route::patch(
+            '/documentation/{documentation}',
+            [DocumentationController::class, 'update']
+        )->name(
+            'documentation.update'
+        );
+        Route::delete(
+            '/documentation/{documentation}',
+            [DocumentationController::class, 'destroy']
+        )->name(
+            'documentation.destroy'
+        );
     });
 
 
@@ -297,6 +346,4 @@ Route::middleware(['auth', AdminOrAuditMiddleware::class])
         )->name(
             'countQurban.show'
         );
-
-
     });
