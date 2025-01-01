@@ -1,161 +1,186 @@
 @extends('admin.layout.index')
 @section('content')
-
-    
-    
     <!--  Main wrapper -->
     <div class="body-wrapper">
-      <!--  Header Start -->
-      <header class="app-header">
-        <nav class="navbar navbar-expand-lg navbar-light">
-          <ul class="navbar-nav">
-            <li class="nav-item d-block d-xl-none">
-              <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
-                <i class="ti ti-menu-2"></i>
-              </a>
-            </li>
-           
-          </ul>
-          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-              
-              <li class="nav-item dropdown">
-                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  <img src="{{asset('Admin/src/assets/images/profile/user-1.jpg')}}" alt="" width="35" height="35" class="rounded-circle">
-                </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-                  <div class="message-body">
-                   
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-mail fs-6"></i>
-                      <p class="mb-0 fs-3">Nama Yang Login</p>
-                    </a>
-                    
-                    <a href="" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </header>
+        <!--  Header Start -->
+        <header class="app-header">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <ul class="navbar-nav">
+                    <li class="nav-item d-block d-xl-none">
+                        <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
+                            <i class="ti ti-menu-2"></i>
+                        </a>
+                    </li>
+                </ul>
+                <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+                    <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{{ asset('Admin/src/assets/images/profile/user-1.jpg') }}" alt=""
+                                    width="35" height="35" class="rounded-circle">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                                <div class="message-body">
+                                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                                        <i class="ti ti-user fs-6"></i>
+                                        <p class="mb-0 fs-3">
+                                            {{ Auth::user()->name }}
+                                        </p>
+                                    </a>
 
-      <div class="container-fluid">
+                                    <a class="btn btn-outline-primary mx-3 mt-2 d-block"href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                  document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
         <div class="container-fluid">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title fw-semibold mb-3">Melihat Data Laporan</h5>
-              <a href="/cek_zakat" class="btn btn-outline-primary m-1 mb-3 ">Kembali Halaman</a>
-              <div class="card">
-                <div class="card-body">
-                  <form id="form1" name="form1">
-                    <div class="mb-3">
-                        <label for="" class="form-label">Tanggal</label>
-                        <input type="text" class="form-control" id="" aria-describedby="">
-                    </div>
-                    <div class="mb-3">
-                        <label for="" class="form-label">Kategori Hewan Qurban</label>
-                        <select class="form-control" name="kategori" id="kategori" value="" onclick="tampilkan()">
-                            <option value="">--- Pilih ---</option>
-                            <option value="sapi">Sapi</option>
-                            <option value="kambing">Kambing</option>
-                 
-                        </select>
-                    </div>
-
-                    <script>
-                    function tampilkan() {
-                        var pesan = document.getElementById("form1").kategori.value;
-                        var p_kontainer = document.getElementById("container");
-                    
-                        if (pesan == "sapi") {
-                        p_kontainer.innerHTML = `
-                            <div class="form-group">
-                            <label class="form-label">Orang/Keluarga Besar Yang Berqurban  :</label>
-                            </div>
-                            <div class="form-group">
-                            <div class="col-12">
-                                <textarea name="" class="form-control" cols="3" rows="3"></textarea>
-                                
-                            </div>
-                            
-                
-                            </div>
-                            `;
-                        } else if (pesan == "kambing") {
-                        p_kontainer.innerHTML = `
-                            <div class="form-group">
-                            <label class="form-label">Orang/Keluarga Besar Yang Berqurban  :</label>
-                            </div>
-                            <div class="form-group">
-                            <div class="col-12">
-                                <textarea name="" class="form-control" cols="3" rows="3"></textarea>
-                                
-                            </div>
-                            
-                
-                            </div>
-                            `;
-                        } 
-                    }
-                    </script>
-
-                    <div class="container">
-                        <p id="container"></p>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="" class="form-label">Bukti Hewan Qurban <sup>* Jika Ada</sup></label>
-                        <input type="file" class="form-control" id="" aria-describedby=""><br>
-                        <!-- <img src="{{asset('Gp/assets/img/portfolio/portfolio-1.jpg')}}" class="boder-1" width="200" height="200"> -->
-                        <div class="col-md-4">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title fw-semibold mb-3">Melihat Data Laporan</h5>
+                        <a href="{{ route('countQurban.index') }}" class="btn btn-outline-primary m-1 mb-3 ">
+                            Kembali Halaman
+                        </a>
                         <div class="card">
-                            <img src="{{asset('Gp/assets/img/portfolio/portfolio-1.jpg')}}" class="card-img-top" alt="...">
                             <div class="card-body">
-                            
-                            <p class="card-text">Senin, 09 Agustus 2024 : 10.00 WIB</p>
-                        
-                        </div>
+                                <form id="form1" name="form1">
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Tanggal</label>
+                                        <input type="text" class="form-control" id="" aria-describedby=""
+                                            value="{{ \Carbon\Carbon::parse($countQurban->tanggal_cq)->locale('id')->isoFormat('D MMMM YYYY') }}"
+                                            disabled>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Kategori Hewan Qurban</label>
+                                        <select class="form-control" name="kategori_qurban" id="kategori"
+                                            onchange="tampilkan()" disabled>
+                                            @if ($countQurban->kategori_qurban === 'sapi')
+                                                <option value="sapi" selected>Sapi</option>
+                                            @else
+                                                <option value="kambing" selected>Kambing</option>
+                                            @endif
+                                        </select>
+                                    </div>
+
+                                    <script>
+                                        function tampilkan() {
+                                            var pesan = document.getElementById("form1").kategori.value;
+                                            var p_kontainer = document.getElementById("container");
+
+                                            if (pesan == "sapi") {
+                                                p_kontainer.innerHTML = `
+                                                    <div class="form-group">
+                                                        <label class="form-label">Orang/Keluarga Besar Yang Berqurban  :</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-12">
+                                                            <textarea name="" class="form-control" cols="3" rows="3" disabled>
+                                                                {{ $countQurban->nama_yg_qurban }}
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                `;
+                                            } else if (pesan == "kambing") {
+                                                p_kontainer.innerHTML = `
+                                                    <div class="form-group">
+                                                        <label class="form-label">Orang/Keluarga Besar Yang Berqurban  :</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-12">
+                                                            <textarea name="" class="form-control" cols="3" rows="3" disabled>
+                                                                {{ $countQurban->nama_yg_qurban }}
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                `;
+                                            }
+                                        }
+
+                                        // Otomatis jalankan
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            tampilkan();
+                                        });
+                                    </script>
+
+                                    <div class="container">
+                                        <p id="container"></p>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Jumlah Hewan Qurban</label>
+                                        @if ($countQurban->kategori_qurban === 'sapi')
+                                            <input type="text" class="form-control" id="" aria-describedby=""
+                                                value="{{ $countQurban->jumlah_sapi }} ekor" disabled>
+                                        @else
+                                            <input type="text" class="form-control" id="" aria-describedby=""
+                                                value="{{ $countQurban->jumlah_kambing }} ekor" disabled>
+                                        @endif
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Bukti Hewan Qurban <sup>* Jika
+                                                Ada</sup></label>
+                                        {{-- <input type="file" class="form-control" id="" aria-describedby=""
+                                            value="{{ $countQurban->bukti_cq }}" disabled> --}}
+                                        <div class="col-md-4">
+                                            <div class="card">
+                                                @if (!empty($countQurban->bukti_cq))
+                                                    <img src="{{ asset('storage/' . $countQurban->bukti_cq) }}"
+                                                        class="card-img-top" alt="bukti_cq">
+                                                    <div class="card-body">
+                                                        <p class="card-text text-center">
+                                                            {{ \Carbon\Carbon::parse($countQurban->tanggal_cq)->locale('id')->translatedFormat('l, d F Y') }}
+                                                        </p>
+                                                    </div>
+                                                @else
+                                                    <img src="{{ asset('Gp/assets/img/portfolio/portfolio-1.jpg') }}"
+                                                        class="card-img-top" alt="...">
+                                                    <div class="card-body">
+                                                        <p class="card-text text-center">
+                                                            {{ \Carbon\Carbon::parse($countQurban->tanggal_cq)->locale('id')->translatedFormat('l, d F Y') }}
+                                                        </p>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="" class="form-label">Status Qurban</label>
+                                            <select class="form-control" name="" id="" disabled>
+                                                @if ($countQurban->status_cq === 'diterima')
+                                                    <option value="diterima">Diterima Oleh Panitia</option>
+                                                @else
+                                                    <option value="disalurkan">Disalurkan Untuk Umat</option>
+                                                @endif
+                                            </select>
+                                        </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="" class="form-label">Status Qurban</label>
-                        <select class="form-control" name="" id="" value="" >
-                            <option value="">--- Pilih ---</option>
-                            <option value="diterima">Diterima Oleh Panitia</option>
-                            <option value="disalurkan">Disalurkan Untuk Umat</option>
-                 
-                        </select>
-                    </div>
-
-
-
-
-
-                    
-                    
-                    
-                  </form>
                 </div>
-              </div>
-              
-              
             </div>
-          </div>
         </div>
-      </div>
 
-
-
-      
         <div class="py-6 px-6 text-center">
-          <p class="mb-0 fs-4">Design and Developed by <a href="https://www.linkedin.com/in/fianfi/" target="_blank" class="pe-1 text-primary text-decoration-underline">AndFat</a></p>
+            <p class="mb-0 fs-4">Design and Developed by <a href="https://www.linkedin.com/in/fianfi/" target="_blank"
+                    class="pe-1 text-primary text-decoration-underline">AndFath</a>
+            </p>
         </div>
-      </div>
     </div>
-  </div>
-
-
+    </div>
+    </div>
 @endsection

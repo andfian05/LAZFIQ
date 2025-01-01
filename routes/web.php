@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\CountInfaqController;
 use App\Http\Controllers\CountZakatController;
+use App\Http\Controllers\CountQurbanController;
 use App\Http\Middleware\AdminOrAuditMiddleware;
 
 
@@ -69,7 +70,27 @@ Route::middleware(['auth', AdminMiddleware::class])
             'countZakat.destroy'
         );
 
-        
+        // Count Qurban
+        Route::get(
+            '/count-qurban/create',
+            [CountQurbanController::class, 'create']
+        )->name(
+            'countQurban.create'
+        );
+        Route::post(
+            '/count-qurban',
+            [CountQurbanController::class, 'store']
+        )->name(
+            'countQurban.store'
+        );
+        Route::delete(
+            '/count-qurban/{countQurban}',
+            [CountQurbanController::class, 'destroy']
+        )->name(
+            'countQurban.destroy'
+        );
+
+
     });
 
 
@@ -102,6 +123,20 @@ Route::middleware(['auth', AdminOrAuditMiddleware::class])
             [CountZakatController::class, 'show']
         )->name(
             'countZakat.show'
+        );
+
+        // Count Qurban
+        Route::get(
+            '/count-qurban',
+            [CountQurbanController::class, 'index']
+        )->name(
+            'countQurban.index'
+        );
+        Route::get(
+            '/count-qurban/{countQurban}',
+            [CountQurbanController::class, 'show']
+        )->name(
+            'countQurban.show'
         );
 
         
