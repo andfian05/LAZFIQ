@@ -12,15 +12,18 @@ use App\Http\Controllers\PostQurbanController;
 use App\Http\Controllers\CountQurbanController;
 use App\Http\Middleware\AdminOrAuditMiddleware;
 use App\Http\Controllers\DocumentationController;
+use App\Http\Controllers\LandingController;
 
 
 
-Route::get('/', function () {
-    return view('tampilan');
-});
+// Main Landing Page
+Route::get(
+    '/',
+    [LandingController::class, 'index']
+);
 
 
-
+// Authentication Users and Features for Users after Authentication
 Auth::routes();
 
 Route::get(
