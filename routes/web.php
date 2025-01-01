@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\PostInfaqController;
+use App\Http\Controllers\PostZakatController;
 use App\Http\Controllers\CountInfaqController;
 use App\Http\Controllers\CountZakatController;
 use App\Http\Controllers\CountQurbanController;
@@ -140,6 +141,60 @@ Route::middleware(['auth', AdminMiddleware::class])
         )->name(
             'postInfaq.destroy'
         );
+
+
+
+        // Post Zakat
+        Route::get(
+            '/post-zakat',
+            [PostZakatController::class, 'index']
+        )->name(
+            'postZakat.index'
+        );
+        Route::get(
+            '/post-zakat/create',
+            [PostZakatController::class, 'create']
+        )->name(
+            'postZakat.create'
+        );
+        Route::post(
+            '/post-zakat',
+            [PostZakatController::class, 'store']
+        )->name(
+            'postZakat.store'
+        );
+        Route::get(
+            '/post-zakat/{postZakat}',
+            [PostZakatController::class, 'show']
+        )->name(
+            'postZakat.show'
+        );
+        Route::get(
+            '/post-zakat/{postZakat}/edit',
+            [PostZakatController::class, 'edit']
+        )->name(
+            'postZakat.edit'
+        );
+        Route::put(
+            '/post-zakat/{postZakat}',
+            [PostZakatController::class, 'update']
+        )->name(
+            'postZakat.update'
+        );
+        Route::patch(
+            '/post-zakat/{postZakat}',
+            [PostZakatController::class, 'update']
+        )->name(
+            'postZakat.update'
+        );
+        Route::delete(
+            '/post-zakat/{postZakat}',
+            [PostZakatController::class, 'destroy']
+        )->name(
+            'postZakat.destroy'
+        );
+
+
 
         
     });
