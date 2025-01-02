@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\CountInfaq;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -158,5 +159,45 @@ class CountInfaqController extends Controller
                 'Terjadi kesalahan dalam menghapus data perhitungan infaq!'
             );
         }
+    }
+
+    /**
+     * Summary of getChartData Infaq
+     * @param \Illuminate\Http\Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
+    public function getChartData(Request $request)
+    {
+        // Take month and year from input
+        $monthYear = $request->input('month_year', '');
+
+        // separate month and year
+        $month = null;
+        $year = null;
+
+        if ($monthYear) {
+            list($year, $month) = explode('-', $monthYear);
+        }
+
+        $infaqData = CountInfaq::query()
+            ->when(
+                $month && $year,
+                function ($query) use ($month, $year) {
+                    $query->whereYear('tanggal_ci', $year)
+                        ->whereMonth('tanggal_ci', $month);
+                }
+            )
+            ->selectRaw(
+                'SUM(debit_ci) as pemasukan, SUM(kredit_ci) as pengeluaran'
+            )
+            ->first();
+
+        return response()->json(
+            [
+                'monthYear' => Carbon::create($year, $month)
+                    ->locale('id')->translatedFormat('F Y'),
+                'infaqData' => $infaqData
+            ]
+        );
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CountInfaq;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $cimonthsYears = CountInfaq::query()
+            ->selectRaw('YEAR(tanggal_ci) as year, MONTH(tanggal_ci) as month')
+            ->distinct()
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->get();
+
+        return view(
+            'home'
+        )->with(
+            [
+                'cimonthsYears' => $cimonthsYears,
+            ]
+        );
     }
 }

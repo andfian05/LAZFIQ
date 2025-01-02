@@ -361,6 +361,12 @@ Route::middleware(['auth', AdminOrAuditMiddleware::class])
             'countInfaq.show'
         );
 
+        // Get Chart Data from Count Infaq
+        Route::get(
+            '/infaq-chart-data',
+            [CountInfaqController::class, 'getChartData']
+        );
+
         // Count Zakat
         Route::get(
             '/count-zakat',

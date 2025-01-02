@@ -48,7 +48,40 @@
 
         <div class="container-fluid">
             <!--  Grafik Infaq -->
-
+            <div class="row">
+                <div class="col-lg-12 d-flex align-items-strech">
+                    <div class="card w-100">
+                        <div class="card-body">
+                            <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                                <div class="mb-3 mb-sm-0">
+                                    <h5 class="card-title fw-semibold">Grafik Infaq</h5>
+                                </div>
+                                <div>
+                                    <form id="filterFormInfaq">
+                                        <select id="monthYearSelectInfaq" class="form-select">
+                                            @foreach ($cimonthsYears as $itemci)
+                                                @php
+                                                    $monthYear =
+                                                        $itemci->year .
+                                                        '-' .
+                                                        str_pad($itemci->month, 2, '0', STR_PAD_LEFT);
+                                                @endphp
+                                                <option value="{{ $monthYear }}"
+                                                    {{ request('month_year') == $monthYear ? 'selected' : '' }}>
+                                                    {{ \Carbon\Carbon::createFromFormat('Y-m', $monthYear)->locale('id')->translatedFormat('F Y') }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
+                            <div style="text-align: center;">
+                                <canvas id="barChartInfaq" class=" w-60 h-48 m-0"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!--  Grafik Zakat -->
 
@@ -102,4 +135,119 @@
             });
         </script>
     @endif
+@endsection
+
+@section('js.chart')
+    <script>
+        // Create Global Variables
+        let chartInfaq;
+
+
+
+        // Create Function for Convert to IDR by Value
+        function formatRupiah(value) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(value);
+        }
+
+
+
+        // Create a Function to Process Charts from Infaq Data
+        function getDataInfaq() {
+            $.ajax({
+                url: '/infaq-chart-data',
+                method: 'GET',
+                dataType: 'json',
+                data: {
+                    'month_year': $("#monthYearSelectInfaq").val(),
+                },
+                success: function(data) {
+                    const monthYear = data.monthYear;
+                    const infaqData = data.infaqData;
+
+                    const ctx = document.getElementById('barChartInfaq').getContext('2d');
+
+                    // Destroy the chart Infaq if it already exists to avoid duplication
+                    if (chartInfaq) {
+                        chartInfaq.destroy();
+                    }
+
+                    // Create a new chart instance for chart Infaq
+                    chartInfaq = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Pemasukan', 'Pengeluaran'],
+                            datasets: [{
+                                label: `Data Infaq untuk Bulan ${monthYear}`,
+                                data: [infaqData.pemasukan, infaqData.pengeluaran],
+                                backgroundColor: ['rgb(75,192,192)', 'rgb(255,99,132)'],
+                                borderWidth: 1,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return formatRupiah(value); // Format Y-axis
+                                        },
+                                        font: {
+                                            size: 10 // Adjust Y-axis font size
+                                        }
+                                    }
+                                },
+                                x: {
+                                    ticks: {
+                                        font: {
+                                            size: 10 // Adjust X-axis font size
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: {
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return formatRupiah(context.raw); // Format tooltip
+                                        }
+                                    }
+                                },
+                                legend: {
+                                    labels: {
+                                        font: {
+                                            size: 10 // Adjust legend font size
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                },
+                error: function(error) {
+                    console.error("Error fetching data:", error);
+                }
+            });
+        }
+
+
+
+        // Load Chart
+        $(document).ready(function () {
+            // Trigger data loading on page load
+            getDataInfaq();
+            
+
+
+            // Reload chart data when dropdown value changes
+            $("#monthYearSelectInfaq").change(function() {
+                getDataInfaq();
+            });
+        })
+    </script>
 @endsection
