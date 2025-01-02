@@ -381,6 +381,12 @@ Route::middleware(['auth', AdminOrAuditMiddleware::class])
             'countZakat.show'
         );
 
+        // Get Chart Data from Count Zakat
+        Route::get(
+            '/zakat-chart-data',
+            [CountZakatController::class, 'getChartData']
+        );
+
         // Count Qurban
         Route::get(
             '/count-qurban',

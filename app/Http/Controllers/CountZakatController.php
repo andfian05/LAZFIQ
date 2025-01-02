@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\CountZakat;
 use Illuminate\Http\Request;
 
@@ -146,5 +147,33 @@ class CountZakatController extends Controller
                 'Terjadi kesalahan dalam menghapus data perhitungan zakat!'
             );
         }
+    }
+
+    /**
+     * Summary of getChartData Zakat
+     * @param \Illuminate\Http\Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
+    public function getChartData(Request $request)
+    {
+        // Take year from input
+        $year = $request->input('year');
+
+        $zakatData = CountZakat::query()
+            ->when(
+                $year,
+                function ($query) use ($year) {
+                    $query->whereYear('tanggal_cz', $year);
+                }
+            )
+            ->selectRaw('SUM(zakat_uang) as zakatu, SUM(zakat_beras) as zakatb')
+            ->first();
+
+        return response()->json(
+            [
+                'year' => Carbon::create($year)->format('Y'),
+                'zakatData' => $zakatData
+            ]
+        );
     }
 }

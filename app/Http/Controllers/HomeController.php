@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CountInfaq;
+use App\Models\CountZakat;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -31,11 +32,18 @@ class HomeController extends Controller
             ->orderBy('month', 'asc')
             ->get();
 
+        $czYears = CountZakat::query()
+            ->selectRaw('YEAR(tanggal_cz) as year')
+            ->distinct()
+            ->orderBy('year', 'asc')
+            ->get();
+
         return view(
             'home'
         )->with(
             [
                 'cimonthsYears' => $cimonthsYears,
+                'czYears' => $czYears,
             ]
         );
     }

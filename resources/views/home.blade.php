@@ -84,7 +84,34 @@
             </div>
 
             <!--  Grafik Zakat -->
-
+            <div class="row">
+                <div class="col-lg-12 d-flex align-items-strech">
+                    <div class="card w-100">
+                        <div class="card-body">
+                            <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                                <div class="mb-3 mb-sm-0">
+                                    <h5 class="card-title fw-semibold">Grafik Zakat</h5>
+                                </div>
+                                <div>
+                                    <form id="filterFormZakat">
+                                        <select id="yearSelectZakat" class="form-select">
+                                            @foreach ($czYears as $item)
+                                                <option value="{{ $item->year }}"
+                                                    {{ request('year') == $item->year ? 'selected' : '' }}>
+                                                    {{ $item->year }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
+                            <div style="text-align: center;">
+                                <canvas id="barChartZakat" class=" w-60 h-48 m-0"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!--  Grafik Qurban -->
 
@@ -141,6 +168,7 @@
     <script>
         // Create Global Variables
         let chartInfaq;
+        let chartZakat;
 
 
 
@@ -235,18 +263,140 @@
             });
         }
 
+        // Create a Function to Process Charts from Zakat Data
+        function getDataZakat() {
+            $.ajax({
+                url: '/zakat-chart-data',
+                method: 'GET',
+                dataType: 'json',
+                data: {
+                    'year': $("#yearSelectZakat").val(),
+                },
+                success: function(data) {
+                    const year = data.year;
+                    const zakatData = data.zakatData;
+
+                    const ctx = document.getElementById('barChartZakat').getContext('2d');
+
+                    // Destroy the chart Zakat if it already exists to avoid duplication
+                    if (chartZakat) {
+                        chartZakat.destroy();
+                    }
+
+                    // Create a new chart instance for chart Zakat
+                    chartZakat = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Zakat Uang', 'Zakat Beras'],
+                            datasets: [{
+                                    label: 'Zakat Uang (Rp)',
+                                    data: [zakatData.zakatu, 0],
+                                    backgroundColor: 'rgb(75,192,192)',
+                                    yAxisID: 'y1',
+                                },
+                                {
+                                    label: 'Zakat Beras (Kg)',
+                                    data: [0, zakatData.zakatb],
+                                    backgroundColor: 'rgb(54,162,235)',
+                                    yAxisID: 'y2',
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y1: {
+                                    beginAtZero: true,
+                                    position: 'left', // Place on the left side
+                                    title: {
+                                        display: true,
+                                        text: 'Rupiah (Rp)', // Label for the first Y-axis
+                                    },
+                                    ticks: {
+                                        callback: function(value) {
+                                            return formatRupiah(value); // Format Rupiah
+                                        },
+                                        font: {
+                                            size: 10 // Adjust Y-axis font size
+                                        }
+                                    }
+                                },
+                                y2: {
+                                    beginAtZero: true,
+                                    position: 'right', // Place on the right side
+                                    title: {
+                                        display: true,
+                                        text: 'Kilogram (Kg)', // Label for the second Y-axis
+                                    },
+                                    ticks: {
+                                        callback: function(value) {
+                                            return `${value} Kg`; // Format as Kg
+                                        },
+                                        font: {
+                                            size: 10 // Adjust Y-axis font size
+                                        }
+                                    },
+                                    grid: {
+                                        drawOnChartArea: false, // Avoid overlapping grids
+                                    }
+                                },
+                                x: {
+                                    ticks: {
+                                        font: {
+                                            size: 10 // Adjust X-axis font size
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: {
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            if (context.dataset.yAxisID === 'y1') {
+                                                return formatRupiah(context.raw); // Tooltip for Rupiah
+                                            } else if (context.dataset.yAxisID === 'y2') {
+                                                return `${context.raw} Kg`; // Tooltip for Kilogram
+                                            }
+                                        }
+                                    }
+                                },
+                                legend: {
+                                    labels: {
+                                        font: {
+                                            size: 10 // Adjust legend font size
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                },
+                error: function(error) {
+                    console.error("Error fetching data:", error);
+                }
+            });
+        }
+
 
 
         // Load Chart
         $(document).ready(function () {
             // Trigger data loading on page load
             getDataInfaq();
+            getDataZakat();
             
 
 
             // Reload chart data when dropdown value changes
+            // Chart Infaq Data
             $("#monthYearSelectInfaq").change(function() {
                 getDataInfaq();
+            });
+
+            // Chart Zakat Data
+            $("#yearSelectZakat").change(function() {
+                getDataZakat();
             });
         })
     </script>
