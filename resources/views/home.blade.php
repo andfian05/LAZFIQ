@@ -114,7 +114,34 @@
             </div>
 
             <!--  Grafik Qurban -->
-
+            <div class="row">
+                <div class="col-lg-12 d-flex align-items-strech">
+                    <div class="card w-100">
+                        <div class="card-body">
+                            <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                                <div class="mb-3 mb-sm-0">
+                                    <h5 class="card-title fw-semibold">Grafik Qurban</h5>
+                                </div>
+                                <div>
+                                    <form id="filterFormQurban">
+                                        <select id="yearSelectQurban" class="form-select">
+                                            @foreach ($cqYears as $item)
+                                                <option value="{{ $item->year }}"
+                                                    {{ request('year') == $item->year ? 'selected' : '' }}>
+                                                    {{ $item->year }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
+                            <div style="text-align: center;">
+                                <canvas id="barChartQurban" class=" w-60 h-48 m-0"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!--  Footer -->
             <div class="py-6 px-6 text-center">
@@ -169,6 +196,7 @@
         // Create Global Variables
         let chartInfaq;
         let chartZakat;
+        let chartQurban;
 
 
 
@@ -378,6 +406,86 @@
             });
         }
 
+        // Create a Function to Process Charts from Qurban Data
+        function getDataQurban() {
+            $.ajax({
+                url: '/qurban-chart-data',
+                method: 'GET',
+                dataType: 'json',
+                data: {
+                    'year': $("#yearSelectQurban").val(),
+                },
+                success: function(data) {
+                    const year = data.year;
+                    const qurbanData = data.qurbanData;
+
+                    const ctx = document.getElementById('barChartQurban').getContext('2d');
+
+                    // Destroy the chart Qurban if it already exists to avoid duplication
+                    if (chartQurban) {
+                        chartQurban.destroy();
+                    }
+
+                    // Create a new chart instance for chart Qurban
+                    chartQurban = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Sapi', 'Kambing'],
+                            datasets: [{
+                                label: `Data Hewan Qurban untuk Tahun ${year}`,
+                                data: [qurbanData.sapi, qurbanData.kambing],
+                                backgroundColor: ['rgb(75,192,192)', 'rgb(54,162,235)'],
+                                borderWidth: 1,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return `${value} ekor`; // Add units in Y-axis
+                                        },
+                                        font: {
+                                            size: 10 // Adjust Y-axis font size
+                                        }
+                                    }
+                                },
+                                x: {
+                                    ticks: {
+                                        font: {
+                                            size: 10 // Adjust X-axis font size
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: {
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return `${context.raw} ekor`; // Add units in tooltip
+                                        }
+                                    }
+                                },
+                                legend: {
+                                    labels: {
+                                        font: {
+                                            size: 10 // Adjust legend font size
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                },
+                error: function(error) {
+                    console.error("Error fetching data:", error);
+                }
+            });
+        }
+
 
 
         // Load Chart
@@ -385,6 +493,7 @@
             // Trigger data loading on page load
             getDataInfaq();
             getDataZakat();
+            getDataQurban();
             
 
 
@@ -397,6 +506,11 @@
             // Chart Zakat Data
             $("#yearSelectZakat").change(function() {
                 getDataZakat();
+            });
+
+            // Chart Qurban Data
+            $("#yearSelectQurban").change(function() {
+                getDataQurban();
             });
         })
     </script>

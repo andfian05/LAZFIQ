@@ -400,4 +400,10 @@ Route::middleware(['auth', AdminOrAuditMiddleware::class])
         )->name(
             'countQurban.show'
         );
+
+        // Get Chart Data from Count Qurban
+        Route::get(
+            '/qurban-chart-data',
+            [CountQurbanController::class, 'getChartData']
+        );
     });

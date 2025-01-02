@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\CountQurban;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -158,5 +159,33 @@ class CountQurbanController extends Controller
                 'Terjadi kesalah dalam menghapus data perhitungan qurban!'
             );
         }
+    }
+
+    /**
+     * Summary of getChartData Qurban
+     * @param \Illuminate\Http\Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
+    public function getChartData(Request $request)
+    {
+        // Take year from input
+        $year = $request->input('year');
+
+        $qurbanData = CountQurban::query()
+            ->when(
+                $year,
+                function ($query) use ($year) {
+                    $query->whereYear('tanggal_cq', $year);
+                }
+            )
+            ->selectRaw('SUM(jumlah_sapi) as sapi, SUM(jumlah_kambing) as kambing')
+            ->first();
+
+        return response()->json(
+            [
+                'year' => Carbon::create($year)->format('Y'),
+                'qurbanData' => $qurbanData
+            ]
+        );
     }
 }

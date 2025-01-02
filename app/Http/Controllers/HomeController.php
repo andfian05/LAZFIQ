@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CountInfaq;
 use App\Models\CountZakat;
+use App\Models\CountQurban;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -38,12 +39,19 @@ class HomeController extends Controller
             ->orderBy('year', 'asc')
             ->get();
 
+        $cqYears = CountQurban::query()
+            ->selectRaw('YEAR(tanggal_cq) as year')
+            ->distinct()
+            ->orderBy('year', 'asc')
+            ->get();
+
         return view(
             'home'
         )->with(
             [
                 'cimonthsYears' => $cimonthsYears,
                 'czYears' => $czYears,
+                'cqYears' => $cqYears
             ]
         );
     }
