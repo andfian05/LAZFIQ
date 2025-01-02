@@ -25,10 +25,10 @@
                             </a>
                         </li>
                         <!-- <li class="nav-item px-3 px-xl-4">
-                                                                                                                <a class="nav-link fw-medium" aria-current="page" href="#pengurus">
-                                                                                                                    Pengurus Masjid
-                                                                                                                </a>
-                                                                                                            </li> -->
+                                                                                                                            <a class="nav-link fw-medium" aria-current="page" href="#pengurus">
+                                                                                                                                Pengurus Masjid
+                                                                                                                            </a>
+                                                                                                                        </li> -->
                     </ul>
                 </div>
             </div>
@@ -54,18 +54,18 @@
                                 Lokasi Masjid
                             </a>
                             <!-- <div class="w-100 d-block d-md-none"></div>
-                                                                                                                                    <a href="#!" role="button" data-bs-toggle="modal" data-bs-target="#popupVideo">
-                                                                                                                                        <span class="btn btn-danger round-btn-lg rounded-circle me-3 danger-btn-shadow">
-                                                                                                                                            <img src="assets/img/hero/play.svg" width="15" alt="paly"/>
-                                                                                                                                        </span>
-                                                                                                                                    </a>
-                                                                                                                                    <span class="fw-medium">Play Demo</span> -->
+                                                                                                                                                <a href="#!" role="button" data-bs-toggle="modal" data-bs-target="#popupVideo">
+                                                                                                                                                    <span class="btn btn-danger round-btn-lg rounded-circle me-3 danger-btn-shadow">
+                                                                                                                                                        <img src="assets/img/hero/play.svg" width="15" alt="paly"/>
+                                                                                                                                                    </span>
+                                                                                                                                                </a>
+                                                                                                                                                <span class="fw-medium">Play Demo</span> -->
                             <!-- <div class="modal fade" id="popupVideo" tabindex="-1" aria-labelledby="popupVideo" aria-hidden="true">
-                                                                                                                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                                                                                                                    <div class="modal-content">
-                                                                                                                                    </div>
-                                                                                                                                    </div>
-                                                                                                                                </div> -->
+                                                                                                                                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                                                                                                                <div class="modal-content">
+                                                                                                                                                </div>
+                                                                                                                                                </div>
+                                                                                                                                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -149,7 +149,7 @@
                                     Umat Dan Kemakmuran Masjid.
                                 </p>
                                 <a class="btn btn-primary bg-gradient-primary-to-secondary  px-3 mb-2 mb-lg-0 rounded-pill"
-                                    href="#">
+                                    href="{{ route('lazfiq.infaq') }}">
                                     <i class="fa-solid fa-graduation-cap"></i>&nbsp;Melihat Laporan
                                 </a>
                             </div>
@@ -174,7 +174,7 @@
                                     Diberikan Langsung Kepada Mustahiq Zakat.
                                 </p>
                                 <a class="btn btn-primary bg-gradient-primary-to-secondary  px-3 mb-2 mb-lg-0 rounded-pill"
-                                    href="#">
+                                    href="{{ route('lazfiq.zakat') }}">
                                     <i class="fa-solid fa-graduation-cap"></i>&nbsp;Melihat Laporan
                                 </a>
                             </div>
@@ -199,7 +199,7 @@
                                     Kepada Masyarakat Berhak Menerima.
                                 </p>
                                 <a class="btn btn-primary bg-gradient-primary-to-secondary  px-3 mb-2 mb-lg-0 rounded-pill"
-                                    href="#">
+                                    href="{{ route('lazfiq.qurban') }}">
                                     <i class="fa-solid fa-graduation-cap"></i>&nbsp;Melihat Laporan
                                 </a>
                             </div>

@@ -22,6 +22,27 @@ Route::get(
     [LandingController::class, 'index']
 );
 
+// Landing Page to Display Post Infaq, Post Zakat and Post Qurban
+Route::get(
+    '/lazfiq/sedekah',
+    [LandingController::class, 'landingInfaq']
+)->name(
+    'lazfiq.infaq'
+);
+Route::get(
+    '/lazfiq/zakat',
+    [LandingController::class, 'landingZakat']
+)->name(
+    'lazfiq.zakat'
+);
+Route::get(
+    '/lazfiq/qurban',
+    [LandingController::class, 'landingQurban']
+)->name(
+    'lazfiq.qurban'
+);
+
+
 
 // Authentication Users and Features for Users after Authentication
 Auth::routes();
